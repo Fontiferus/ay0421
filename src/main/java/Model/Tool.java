@@ -6,7 +6,6 @@ final public class Tool {
     private String brand;
     private String toolType;
     private double dailyCharge;
-    private boolean hasWeekdayCharge;
     private boolean hasWeekendCharge;
     private boolean hasHolidayCharge;
 
@@ -17,7 +16,6 @@ final public class Tool {
                 toolType = "Ladder";
                 brand = "Werner";
                 dailyCharge = 1.99;
-                hasWeekdayCharge = true;
                 hasWeekendCharge = true;
                 hasHolidayCharge = false;
                 break;
@@ -25,7 +23,6 @@ final public class Tool {
                 toolType = "Chainsaw";
                 brand = "Stihl";
                 dailyCharge = 1.49;
-                hasWeekdayCharge = true;
                 hasWeekendCharge = false;
                 hasHolidayCharge = true;
                 break;
@@ -33,7 +30,6 @@ final public class Tool {
                 toolType = "Jackhammer";
                 brand = "Ridgid";
                 dailyCharge = 2.99;
-                hasWeekdayCharge = true;
                 hasWeekendCharge = false;
                 hasHolidayCharge = false;
                 break;
@@ -41,7 +37,6 @@ final public class Tool {
                 toolType = "Jackhammer";
                 brand = "DeWalt";
                 dailyCharge = 2.99;
-                hasWeekdayCharge = true;
                 hasWeekendCharge = false;
                 hasHolidayCharge = false;
                 break;
@@ -62,10 +57,6 @@ final public class Tool {
 
     public double getDailyCharge() {
         return dailyCharge;
-    }
-
-    public boolean hasWeekdayCharge() {
-        return hasWeekdayCharge;
     }
 
     public boolean hasWeekendCharge() {
