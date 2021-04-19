@@ -1,5 +1,6 @@
 import Model.CheckoutDetails;
 import Model.Tool;
+import Rental.RentalAgreement;
 import java.io.PrintStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,8 +15,7 @@ public class Main {
     public static void main(String[] args) {
         boolean shouldContinue;
         do {
-            Tool tool = getTool();
-            CheckoutDetails checkoutDetails = getCheckoutDetails();
+            new RentalAgreement(getTool(), getCheckoutDetails()).print();
 
             output.print("Is there another tool to rent? (Y/N) ");
             String answer = input.nextLine();
@@ -88,7 +88,6 @@ public class Main {
                 hasEnteredDate = false;
             }
         } while (!hasEnteredDate);
-        output.println("Date entered: " + checkoutDate.format(dateFormat));
 
         return new CheckoutDetails(daysRented, discountPercent, checkoutDate);
     }
