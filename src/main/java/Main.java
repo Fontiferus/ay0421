@@ -50,6 +50,7 @@ public class Main {
             try {
                 output.print("Enter how many days the customer will rent the tool: ");
                 daysRented = input.nextInt();
+                input.nextLine(); //to take in the new line
                 if (daysRented < 1) {
                     throw new Exception("Days rented must be 1 or greater.");
                 }

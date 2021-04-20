@@ -2,10 +2,12 @@ package Rental;
 
 import Model.CheckoutDetails;
 import Model.Tool;
+import java.text.NumberFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Locale;
 
 public class RentalAgreement {
 
@@ -22,9 +24,9 @@ public class RentalAgreement {
         this.checkoutDetails = checkoutDetails;
         dueDate = checkoutDetails.getCheckoutDate().plusDays(checkoutDetails.getDaysRented());
         chargedDays = calculateChargedDays();
-        preDiscountCharge = calculatePreDiscountCharge();
-        discountAmount = calculateDiscountAmount();
-        finalCharge = calculateFinalCharge();
+        preDiscountCharge = chargedDays * tool.getDailyCharge();
+        discountAmount = ((double) Math.round(preDiscountCharge * checkoutDetails.getDiscountPercent())) / 100;
+        finalCharge = preDiscountCharge - discountAmount;
     }
 
     private int calculateChargedDays() {
@@ -49,19 +51,22 @@ public class RentalAgreement {
         return finalChargedDays;
     }
 
-    private double calculatePreDiscountCharge() {
-        return 1;
-    }
-
-    private double calculateDiscountAmount() {
-        return 1;
-    }
-
-    private double calculateFinalCharge() {
-        return 1;
-    }
-
     public void print() {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/uu");
+        NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
+
+        System.out.println("Rental Agreement: " +
+                "\n\nTool code: " + tool.getToolCode() +
+                "\n\nTool type: " + tool.getToolType() +
+                "\n\nTool brand: " + tool.getBrand() +
+                "\n\nRental days: " + checkoutDetails.getDaysRented() +
+                "\n\nCheck out date: " + checkoutDetails.getCheckoutDate().format(dateFormat) +
+                "\n\nDue date: " + dueDate.format(dateFormat) +
+                "\n\nDaily rental charge: " + dollarFormat.format(tool.getDailyCharge()) +
+                "\n\nCharge days: " + chargedDays +
+                "\n\nPre-discount charge: " + dollarFormat.format(preDiscountCharge) +
+                "\n\nDiscount percent: " + checkoutDetails.getDiscountPercent() + "%" +
+                "\n\nDiscount amount: " + dollarFormat.format(discountAmount) +
+                "\n\nFinal charge: " + dollarFormat.format(finalCharge));
     }
 }
