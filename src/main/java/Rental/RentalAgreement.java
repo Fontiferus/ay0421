@@ -2,6 +2,7 @@ package Rental;
 
 import Model.CheckoutDetails;
 import Model.Tool;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -9,6 +10,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Locale;
 
+/**
+ * Class containing the details for the rental agreement.
+ */
 public class RentalAgreement {
 
     private final Tool tool;
@@ -17,8 +21,14 @@ public class RentalAgreement {
     private final int chargedDays;
     private final double preDiscountCharge;
     private final double discountAmount;
-    private final double finalCharge;
+    private final BigDecimal finalCharge;
 
+    /**
+     * Constructor to create the rental agreement details.
+     *
+     * @param tool Tool object containing the tool's details
+     * @param checkoutDetails CheckoutDetails object containing the details of checkout
+     */
     public RentalAgreement(final Tool tool, final CheckoutDetails checkoutDetails) {
         this.tool = tool;
         this.checkoutDetails = checkoutDetails;
@@ -26,9 +36,15 @@ public class RentalAgreement {
         chargedDays = calculateChargedDays();
         preDiscountCharge = chargedDays * tool.getDailyCharge();
         discountAmount = ((double) Math.round(preDiscountCharge * checkoutDetails.getDiscountPercent())) / 100;
-        finalCharge = preDiscountCharge - discountAmount;
+        finalCharge = new BigDecimal(Double.toString(preDiscountCharge)).subtract(new BigDecimal(Double.toString(discountAmount)));
     }
 
+    /**
+     * Calculates the charged days of the rental.
+     * Subtracts total charged days if the tool shouldn't be charged on either the weekend or holidays.
+     *
+     * @return int the number of days to be charged
+     */
     private int calculateChargedDays() {
         int finalChargedDays = checkoutDetails.getDaysRented();
         if (!tool.hasWeekendCharge()) {
@@ -51,11 +67,16 @@ public class RentalAgreement {
         return finalChargedDays;
     }
 
-    public void print() {
+    /**
+     * Creates a string to print the rental agreement to the user.
+     *
+     * @return String contains all the info for the rental agreement
+     */
+    public String print() {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/uu");
         NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(new Locale("en", "US"));
 
-        System.out.println("Rental Agreement: " +
+        return "Rental Agreement: " +
                 "\n\nTool code: " + tool.getToolCode() +
                 "\n\nTool type: " + tool.getToolType() +
                 "\n\nTool brand: " + tool.getBrand() +
@@ -67,6 +88,6 @@ public class RentalAgreement {
                 "\n\nPre-discount charge: " + dollarFormat.format(preDiscountCharge) +
                 "\n\nDiscount percent: " + checkoutDetails.getDiscountPercent() + "%" +
                 "\n\nDiscount amount: " + dollarFormat.format(discountAmount) +
-                "\n\nFinal charge: " + dollarFormat.format(finalCharge));
+                "\n\nFinal charge: " + dollarFormat.format(finalCharge);
     }
 }
